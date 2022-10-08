@@ -1,0 +1,13 @@
+{
+  "role": {
+    "name": "NMCV::PublicAccessSchema",
+    "schema_privileges": [
+      {
+        "privileges": [
+          "SELECT",
+          "EXECUTE"
+        ]
+      }
+    ]
+  }
+} 

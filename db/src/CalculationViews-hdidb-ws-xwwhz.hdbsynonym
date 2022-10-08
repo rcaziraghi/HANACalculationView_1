@@ -1,0 +1,20 @@
+{
+  "NMCV::SAGENCYDATA": {
+    "target": {
+      "object": "SAGENCYDATA",
+      "schema": "SFLIGHT"
+    }
+  },
+  "NMCV::STRAVELAG": {
+    "target": {
+      "object": "STRAVELAG",
+      "schema": "SFLIGHT"
+    }
+  },
+  "NMCV::SAGBOOKDAYS": {
+    "target": {
+      "object": "SAGBOOKDAYS",
+      "schema": "SFLIGHT"
+    }
+  }
+}
