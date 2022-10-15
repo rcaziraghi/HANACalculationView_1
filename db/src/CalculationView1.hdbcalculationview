@@ -4,18 +4,33 @@
 <localVariables/>
 <variableMappings/>
 <dataSources>
+  <DataSource id="NMCV::SAGBOOKDAYS">
+    <resourceUri>NMCV::SAGBOOKDAYS</resourceUri>
+  </DataSource>
   <DataSource id="NMCV::SAGENCYDATA">
     <resourceUri>NMCV::SAGENCYDATA</resourceUri>
   </DataSource>
   <DataSource id="NMCV::STRAVELAG">
     <resourceUri>NMCV::STRAVELAG</resourceUri>
   </DataSource>
-  <DataSource id="NMCV::SAGBOOKDAYS">
-    <resourceUri>NMCV::SAGBOOKDAYS</resourceUri>
-  </DataSource>
 </dataSources>
 <snapshotProcedures/>
 <calculationViews>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
+    <viewAttributes>
+      <viewAttribute id="AGENCYNUM"/>
+      <viewAttribute id="NUMBOOKINGS" aggregationType="sum"/>
+      <viewAttribute id="NAME"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Join_1"/>
+    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
+      <order byViewAttributeName="NUMBOOKINGS" direction="DESC"/>
+      <rankThreshold>
+        <value>5</value>
+      </rankThreshold>
+    </rankingFilter>
+  </calculationView>
   <calculationView xsi:type="Calculation:RankView" id="Rank_2">
     <viewAttributes>
       <viewAttribute id="AGENCYNUM"/>
@@ -34,39 +49,6 @@
       </rankThreshold>
     </rankingFilter>
   </calculationView>
-  <calculationView xsi:type="Calculation:RankView" id="Rank_1">
-    <viewAttributes>
-      <viewAttribute id="AGENCYNUM"/>
-      <viewAttribute id="NUMBOOKINGS" aggregationType="sum"/>
-      <viewAttribute id="NAME"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="Join_1"/>
-  
-    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
-      <order byViewAttributeName="NUMBOOKINGS" direction="DESC"/>
-      <rankThreshold>
-        <value>5</value>
-      </rankThreshold>
-    </rankingFilter>
-  </calculationView>
-  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
-    <viewAttributes>
-      <viewAttribute id="AGENCYNUM"/>
-      <viewAttribute id="NUMBOOKINGS" aggregationType="sum"/>
-      <viewAttribute id="NAME"/>
-    </viewAttributes>
-    <calculatedViewAttributes/>
-    <input node="NMCV::SAGENCYDATA">
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGENCYNUM" source="AGENCYNUM"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="NUMBOOKINGS" source="NUMBOOKINGS"/>
-    </input>
-    <input node="NMCV::STRAVELAG">
-      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
-      <mapping xsi:type="Calculation:AttributeMapping" target="AGENCYNUM" source="AGENCYNUM"/>
-    </input>
-    <joinAttribute name="AGENCYNUM"/>
-  </calculationView>
   <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="CN_N" joinType="inner">
     <viewAttributes>
       <viewAttribute id="AGENCYNUM"/>
@@ -84,6 +66,23 @@
     <input node="NMCV::SAGBOOKDAYS">
       <mapping xsi:type="Calculation:AttributeMapping" target="DAYCOUNT" source="DAYCOUNT"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="ORDERDAY" source="ORDERDAY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGENCYNUM" source="AGENCYNUM"/>
+    </input>
+    <joinAttribute name="AGENCYNUM"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="AGENCYNUM"/>
+      <viewAttribute id="NUMBOOKINGS" aggregationType="sum"/>
+      <viewAttribute id="NAME"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="NMCV::SAGENCYDATA">
+      <mapping xsi:type="Calculation:AttributeMapping" target="AGENCYNUM" source="AGENCYNUM"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="NUMBOOKINGS" source="NUMBOOKINGS"/>
+    </input>
+    <input node="NMCV::STRAVELAG">
+      <mapping xsi:type="Calculation:AttributeMapping" target="NAME" source="NAME"/>
       <mapping xsi:type="Calculation:AttributeMapping" target="AGENCYNUM" source="AGENCYNUM"/>
     </input>
     <joinAttribute name="AGENCYNUM"/>
@@ -119,6 +118,23 @@
     
       <rectangleSize width="160"/>
     </shape>
+    <shape expanded="true" modelObjectName="Rank_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="322"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Rank_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="NMCV::SAGBOOKDAYS" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="200"/>
+    </shape>
   
     <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
       <upperLeftCorner x="92" y="442"/>
@@ -138,23 +154,6 @@
     <shape modelObjectName="NMCV::STRAVELAG" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
       <upperLeftCorner x="320" y="30"/>
       <rectangleSize width="179"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="322"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-    <shape modelObjectName="Rank_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="20" y="30"/>
-      <rectangleSize width="250"/>
-    </shape>
-    <shape modelObjectName="NMCV::SAGBOOKDAYS" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
-      <upperLeftCorner x="320" y="30"/>
-      <rectangleSize width="200.904296875"/>
-    </shape>
-    <shape expanded="true" modelObjectName="Rank_2" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92" y="217"/>
-      <rectangleSize height="30" width="160"/>
-    </shape>
-  </shapes>
+    </shape></shapes>
 </layout>
 </Calculation:scenario>
